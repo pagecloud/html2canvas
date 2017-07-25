@@ -1,7 +1,7 @@
 /*
   html2canvas 0.5.0-beta4 <http://html2canvas.hertzen.com>
   Copyright (c) 2017 Niklas von Hertzen
-  2017-06-14 Custom build by Erik Koopmans, featuring latest bugfixes and features
+  2017-07-25 Custom build by Erik Koopmans, featuring latest bugfixes and features
 
   Released under MIT License
 */
@@ -2658,6 +2658,18 @@ function getBorderRadiusData(container) {
         if (arr.length <= 1) {
             arr[1] = arr[0];
         }
+
+        arr = arr.map(function (radius) {
+            if (typeof radius === 'string' &&
+                radius.endsWith('%') &&
+                container.bounds &&
+                container.bounds.height) {
+                return (parseFloat(radius) / 100) * Math.max(container.bounds.height, container.bounds.width);
+            }
+            return radius;
+        });
+
+
         return arr.map(asInt);
     });
 }
