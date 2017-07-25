@@ -1,3 +1,10 @@
+var options = {};
+exports.options = function(newOptions){
+    //A place to save the options to avoid refactoring a million methods when we need the options.
+    options = newOptions || options;
+    return options;
+};
+
 exports.smallImage = function smallImage() {
     return "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 };
@@ -45,13 +52,16 @@ exports.decode64 = function(base64) {
 
 exports.getBounds = function(node) {
     if (node.getBoundingClientRect) {
+        var options = exports.options();
         var clientRect = node.getBoundingClientRect();
         var width = node.offsetWidth == null ? clientRect.width : node.offsetWidth;
+        var scrollX = options.ignoreScroll ? window.scrollX : 0;
+        var scrollY = options.ignoreScroll ? window.scrollY : 0;
         return {
-            top: clientRect.top,
-            bottom: clientRect.bottom || (clientRect.top + clientRect.height),
-            right: clientRect.left + width,
-            left: clientRect.left,
+            top: clientRect.top + scrollY,
+            bottom: (clientRect.bottom || (clientRect.top + clientRect.height)) + scrollY,
+            right: clientRect.left + width + scrollX,
+            left: clientRect.left + scrollX,
             width:  width,
             height: node.offsetHeight == null ? clientRect.height : node.offsetHeight
         };

@@ -27,6 +27,8 @@ function html2canvas(nodeList, options) {
     options.imageTimeout = typeof(options.imageTimeout) === "undefined" ? 10000 : options.imageTimeout;
     options.renderer = typeof(options.renderer) === "function" ? options.renderer : CanvasRenderer;
     options.strict = !!options.strict;
+    options.ignoreScroll = !!options.ignoreScroll;
+    utils.options(options);
 
     if (typeof(nodeList) === "string") {
         if (typeof(options.proxy) !== "string") {
