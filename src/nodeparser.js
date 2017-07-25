@@ -811,6 +811,18 @@ function getBorderRadiusData(container) {
         if (arr.length <= 1) {
             arr[1] = arr[0];
         }
+
+        arr = arr.map(function (radius) {
+            if (typeof radius === 'string' &&
+                radius.endsWith('%') &&
+                container.bounds &&
+                container.bounds.height) {
+                return (parseFloat(radius) / 100) * Math.max(container.bounds.height, container.bounds.width);
+            }
+            return radius;
+        });
+
+
         return arr.map(asInt);
     });
 }
