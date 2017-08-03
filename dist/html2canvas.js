@@ -1,7 +1,7 @@
 /*
   html2canvas 0.5.0-beta4 <http://html2canvas.hertzen.com>
   Copyright (c) 2017 Niklas von Hertzen
-  2017-07-25 Custom build by Erik Koopmans, featuring latest bugfixes and features
+  2017-08-03 Custom build by Erik Koopmans, featuring latest bugfixes and features
 
   Released under MIT License
 */
@@ -2102,11 +2102,22 @@ NodeParser.prototype.getWrapperBounds = function(node, transform) {
     return bounds;
 };
 
-NodeParser.prototype.getRangeBounds = function(node, offset, length) {
+NodeParser.prototype.getRangeBounds = function (node, offset, length) {
     var range = this.range || (this.range = node.ownerDocument.createRange());
     range.setStart(node, offset);
     range.setEnd(node, offset + length);
-    return range.getBoundingClientRect();
+    var bounds = range.getBoundingClientRect();
+    if (utils.options().ignoreScroll) {
+        return {
+            top: bounds.top + window.scrollY,
+            bottom: bounds.bottom + window.scrollY,
+            left: bounds.left + window.scrollX,
+            right: bounds.right + window.scrollX,
+            width: bounds.width,
+            height: bounds.height
+        };
+    }
+    return bounds;
 };
 
 function ClearTransform() {}
