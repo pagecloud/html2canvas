@@ -28,6 +28,8 @@ function html2canvas(nodeList, options) {
     options.renderer = typeof(options.renderer) === "function" ? options.renderer : CanvasRenderer;
     options.strict = !!options.strict;
     options.ignoreScroll = !!options.ignoreScroll;
+    options.cleanDocument = typeof(options.cleanDocument) === "function" ? options.cleanDocument : undefined;
+
     utils.options(options);
 
     if (typeof(nodeList) === "string") {

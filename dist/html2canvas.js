@@ -1,7 +1,7 @@
 /*
   html2canvas 0.5.0-beta4 <http://html2canvas.hertzen.com>
   Copyright (c) 2017 Niklas von Hertzen
-  2017-08-03 Custom build by Erik Koopmans, featuring latest bugfixes and features
+  2017-08-15 Custom build by Erik Koopmans, featuring latest bugfixes and features
 
   Released under MIT License
 */
@@ -605,6 +605,10 @@ module.exports = function(ownerDocument, containerDocument, width, height, optio
     var documentElement = cloneNode(ownerDocument.documentElement, options.javascriptEnabled);
     var container = containerDocument.createElement("iframe");
 
+    if(options && options.cleanDocument){
+        options.cleanDocument(documentElement);
+    }
+
     container.className = "html2canvas-container";
     container.style.visibility = "hidden";
     container.style.position = "fixed";
@@ -954,6 +958,8 @@ function html2canvas(nodeList, options) {
     options.renderer = typeof(options.renderer) === "function" ? options.renderer : CanvasRenderer;
     options.strict = !!options.strict;
     options.ignoreScroll = !!options.ignoreScroll;
+    options.cleanDocument = typeof(options.cleanDocument) === "function" ? options.cleanDocument : undefined;
+
     utils.options(options);
 
     if (typeof(nodeList) === "string") {

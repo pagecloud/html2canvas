@@ -59,6 +59,10 @@ module.exports = function(ownerDocument, containerDocument, width, height, optio
     var documentElement = cloneNode(ownerDocument.documentElement, options.javascriptEnabled);
     var container = containerDocument.createElement("iframe");
 
+    if(options && options.cleanDocument){
+        options.cleanDocument(documentElement);
+    }
+
     container.className = "html2canvas-container";
     container.style.visibility = "hidden";
     container.style.position = "fixed";
